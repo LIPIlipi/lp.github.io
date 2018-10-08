@@ -1,6 +1,6 @@
-# <center>openstack-queens</center>
+
 ```python
-##### 安装实验环境
+安装实验环境
 
 创建两台虚拟机：
 controller119：192.168.1.119
@@ -40,19 +40,19 @@ ONBOOT=yes
 systemctl restart network           #配置文件修改后重启网卡
 ip a                                #查看是否生效      ping www.baidu.com
 
-##### 关闭防火墙
+关闭防火墙
 controller119   conputer159  都需要做
 systemctl disable firewalld     #关闭开机自启
 systemctl status firewalld      #查看防火墙状态
 systemctl stop firewalld         #关闭防火墙
 
-##### 修改selinux
+修改selinux
 controller119   conputer159  都需要做
 vim /etc/selinux/config 打开修改配置文件
 vim /etc/sysconfig/selinux
 SELINUX=enforing      改为   SELINUX=disabled
 
-##### 域名解析
+域名解析
 controller119   conputer159  都需要做
 [root@controller119 ~]# vim /etc/hosts
 127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
@@ -62,7 +62,7 @@ controller119   conputer159  都需要做
 [root@controller119 ~]# ping controller119      # 验证域名解析
 [root@controller119 ~]# ping computer159
 
-##### 时钟同步
+时钟同步
 yum install chronyd
 systemctl enable chronyd
 systemctl start chronyd
@@ -153,11 +153,11 @@ yum clean all
 yum repolist
 yum update       #将更新后重新出现的其它yum源,删除其他源
 
-#### 安装openstack客户端(controller119)
+安装openstack客户端(controller119)
 yum install python-openstackclient
 yum install openstack-selinux
 
-#### 数据库SQL database (controller119)
+数据库SQL database (controller119)
 yum install mariadb mariadb-server python2-PyMySQL
 vim /etc/my.cnf.d/openstack.cnf                                    #编辑配置文件
 [mysqld]
@@ -171,7 +171,7 @@ systemctl enable mariadb.service
 systemctl start mariadb.service
 mysql_secure_installation                                        #设置密码 000000
 
-#### 消息服务器 message queue(controller119)
+消息服务器 message queue(controller119)
 yum install rabbitmq-server
 systemctl enable rabbitmq-server.service                          #开机自启
 systemctl start rabbitmq-server.service                           #开启服务
@@ -185,7 +185,7 @@ rabbitmq list_permissions                                          #查看权限
 rabbitmq-plugins enable rabbitmq_management                        #开启组件
 curl 127.0.0.1:15672                                               #web验证
 
-#### Memcached 服务 (controller119)
+Memcached 服务 (controller119)
 yum install memcached python-memcached
 vim /etc/sysconfig/memcached 
 OPTIONS="-l 127.0.0.1,::1,controller119"
@@ -193,7 +193,7 @@ OPTIONS="-l 127.0.0.1,::1,controller119"
 systemctl enable memcached.service
 systemctl start memcached.service
  
-#### Etcd服务(controller119)
+Etcd服务(controller119)
 yum install etcd
 vim /etc/etcd/etcd.conf#[Member]
 ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
@@ -213,7 +213,7 @@ systemctl start etcd
 
 安装服务：（注意再合适地方改变主机名和密码）
 
-#### Keystone服务（controller19）
+Keystone服务（controller19）
 mysql -u root -p000000
 CREATE DATABASE keystone;
 GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' \
@@ -288,7 +288,7 @@ export OS_IMAGE_API_VERSION=2
  . admin-openrc
 openstack token issue
 
-#### glance服务
+glance服务
 mysql -u root -p000000
 CREATE DATABASE glance;
 GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' \
@@ -359,7 +359,7 @@ openstack image create "cirros" \
   --disk-format qcow2 --container-format bare \
   --public
 
-#### nova服务： 
+nova服务： 
 mysql -u root -p000000
 CREATE DATABASE nova_api;
 CREATE DATABASE nova;
@@ -530,7 +530,7 @@ vim /etc/nova/nova.conf
 [scheduler]
 discover_hosts_in_cells_interval = 300
 
-#### neutron服务  controller节点
+neutron服务  controller节点
 mysql -u root -p000000
 CREATE DATABASE neutron;
 GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'localhost' \
